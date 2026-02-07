@@ -175,6 +175,26 @@ messages table:
 - Real-time unread message counter
 - Responsive design for mobile
 
+## Deployment
+
+### GitHub Repository
+**Repository**: https://github.com/Forbescanandoes/hidaddy.git
+- All code pushed to main branch
+- Ready for deployment
+
+### Vercel Deployment Setup
+1. **Import project from GitHub**: https://vercel.com/new
+2. **Add environment variables** in Vercel dashboard:
+   - `NEXT_PUBLIC_SUPABASE_URL` = your Supabase project URL
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = your Supabase anon key
+3. **Deploy**: Vercel will auto-build with Next.js 15
+4. **Run migrations**: Execute SQL migrations in Supabase dashboard
+
+**Vercel Configuration**: 
+- Framework: Next.js
+- Build Command: `npm run build`
+- Output Directory: `.next`
+
 ⏳ Not yet implemented:
 - User authentication
 - User-specific message policies
