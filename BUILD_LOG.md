@@ -275,4 +275,22 @@ messages table:
 
 ---
 
-_Last updated: Deployed to production with Next.js 16.1.6 - Feb 9, 2026_
+## Bug Fixes - Mobile Audio
+
+### iOS Audio Recording Fix
+**Issue**: Audio recording failed on iOS - recordings showed error and couldn't play
+**Root Cause**: iOS Safari doesn't support WebM audio format
+**Fix**: 
+- Added audio format detection (MP4 for iOS, WebM for Android/Desktop)
+- Dynamically detect best supported MIME type
+- Update file extension to match format
+- Added error handling with user-friendly alert
+
+**Supported Formats**:
+- iOS: audio/mp4
+- Android/Chrome: audio/webm
+- Fallback: audio/ogg
+
+---
+
+_Last updated: Fixed iOS audio recording - Feb 9, 2026_

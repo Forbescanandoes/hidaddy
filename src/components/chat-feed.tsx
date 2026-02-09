@@ -142,7 +142,18 @@ export function ChatFeed({ sender }: ChatFeedProps) {
   const handleStartRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
+      
+      // Detect supported audio format (iOS needs mp4, others can use webm)
+      let mimeType = 'audio/webm';
+      if (MediaRecorder.isTypeSupported('audio/mp4')) {
+        mimeType = 'audio/mp4';
+      } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+        mimeType = 'audio/webm;codecs=opus';
+      } else if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
+        mimeType = 'audio/ogg;codecs=opus';
+      }
+
+      const mediaRecorder = new MediaRecorder(stream, { mimeType });
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
 
@@ -153,7 +164,7 @@ export function ChatFeed({ sender }: ChatFeedProps) {
       };
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
         const audioUrl = URL.createObjectURL(audioBlob);
         setRecordedAudio({ blob: audioBlob, url: audioUrl });
         
@@ -165,6 +176,7 @@ export function ChatFeed({ sender }: ChatFeedProps) {
       setRecording(true);
     } catch (error) {
       console.error("Error accessing microphone:", error);
+      alert("Could not access microphone. Please check permissions.");
     }
   };
 
@@ -181,9 +193,18 @@ export function ChatFeed({ sender }: ChatFeedProps) {
     setSending(true);
 
     try {
+      // Determine file extension based on blob type
+      const blobType = recordedAudio.blob.type;
+      let extension = 'webm';
+      if (blobType.includes('mp4')) {
+        extension = 'mp4';
+      } else if (blobType.includes('ogg')) {
+        extension = 'ogg';
+      }
+
       // Create file from blob
-      const fileName = `${Date.now()}-audio.webm`;
-      const file = new File([recordedAudio.blob], fileName, { type: 'audio/webm' });
+      const fileName = `${Date.now()}-audio.${extension}`;
+      const file = new File([recordedAudio.blob], fileName, { type: blobType });
 
       // Upload to Supabase storage
       const { error: uploadError } = await supabase.storage
