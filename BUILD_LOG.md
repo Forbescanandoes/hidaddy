@@ -175,25 +175,55 @@ messages table:
 - Real-time unread message counter
 - Responsive design for mobile
 
+## UI/UX Enhancements (Kid's Page)
+
+### Custom Assets & Branding
+- **Background**: Custom `backround.png` on main screen
+- **Custom Icons**:
+  - `camera.png` - Photo button icon
+  - `MIC-removebg-preview.png` - Voice recording icon
+  - `loveyou-removebg-preview.png` - Love You sticker
+  - `proud-removebg-preview.png` - Proud sticker
+  - `missyou.png` - Miss You sticker
+  - `silly.png` - Silly sticker
+
+### Main Screen Design
+- Large photo button (yellow background) and voice button (red background)
+- Icons scale to fill buttons (removed excess padding)
+- 4 feeling stickers that send actual images when clicked
+- Stickers scaled 1.5x for better visibility
+
+### Chat Screen Design (Kid Only)
+- Mic and camera icons 2x larger than dad's side (160-224px)
+- Custom icons match main screen aesthetic
+- Dad's side remains unchanged with standard Lucide icons
+
 ## Deployment
 
 ### GitHub Repository
 **Repository**: https://github.com/Forbescanandoes/hidaddy.git
 - All code pushed to main branch
-- Ready for deployment
+- Production ready
 
-### Vercel Deployment Setup
+### Vercel Deployment History
+1. **Initial Push**: Committed and pushed all code
+2. **Fix vercel.json**: Removed secret references that were causing deployment errors
+3. **Security Update**: Updated Next.js from 15.5.4 → 16.1.6 to fix CVE-2025-66478
+4. **Status**: Successfully deployed
+
+### Vercel Setup Instructions
 1. **Import project from GitHub**: https://vercel.com/new
-2. **Add environment variables** in Vercel dashboard:
+2. **Add environment variables** in Vercel dashboard (not as secrets):
    - `NEXT_PUBLIC_SUPABASE_URL` = your Supabase project URL
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = your Supabase anon key
-3. **Deploy**: Vercel will auto-build with Next.js 15
+3. **Deploy**: Vercel will auto-build with Next.js 16.1.6
 4. **Run migrations**: Execute SQL migrations in Supabase dashboard
 
 **Vercel Configuration**: 
-- Framework: Next.js
+- Framework: Next.js 16.1.6
 - Build Command: `npm run build`
 - Output Directory: `.next`
+- Auto-deploys on push to main branch
 
 ⏳ Not yet implemented:
 - User authentication
@@ -245,4 +275,4 @@ messages table:
 
 ---
 
-_Last updated: Production ready - Feb 9, 2026_
+_Last updated: Deployed to production with Next.js 16.1.6 - Feb 9, 2026_
